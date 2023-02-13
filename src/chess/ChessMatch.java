@@ -35,6 +35,7 @@ public class ChessMatch {
 		colocarNovaPeca('a', 8,new Rook(tabuleiro, Color.BLACK));
 		colocarNovaPeca('h', 8,new Rook(tabuleiro, Color.BLACK));
 		colocarNovaPeca('e', 8,new King(tabuleiro, Color.BLACK));
+		
 		colocarNovaPeca('e', 1,new King(tabuleiro, Color.WHITE));
 		colocarNovaPeca('a', 1,new Rook(tabuleiro, Color.WHITE));
 		colocarNovaPeca('h', 1,new Rook(tabuleiro, Color.WHITE));
