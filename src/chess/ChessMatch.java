@@ -1,7 +1,6 @@
 package chess;
 
 import boardgame.Board;
-import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
@@ -26,14 +25,18 @@ public class ChessMatch {
 		return mat;
 	}
 	
+	private void colocarNovaPeca(char coluna, int linha, ChessPiece peca) {
+		tabuleiro.colocarPeca(peca, new ChessPosition(coluna, linha).toPosition());
+	}
+	
+	
 	private void comecoPartida() {
 		
-		tabuleiro.colocarPeca(new Rook(tabuleiro, Color.BLACK), new Position(0, 0));
-		tabuleiro.colocarPeca(new Rook(tabuleiro, Color.BLACK), new Position(0, 7));
-		tabuleiro.colocarPeca(new King(tabuleiro, Color.BLACK),	new Position(7, 4));
-		tabuleiro.colocarPeca(new King(tabuleiro, Color.WHITE),	new Position(0, 3));
-		tabuleiro.colocarPeca(new Rook(tabuleiro, Color.WHITE), new Position(7, 0));
-		tabuleiro.colocarPeca(new Rook(tabuleiro, Color.WHITE), new Position(7, 7));
+		colocarNovaPeca('a', 8,new Rook(tabuleiro, Color.BLACK));
+		colocarNovaPeca('h', 8,new Rook(tabuleiro, Color.BLACK));
+		colocarNovaPeca('e', 8,new King(tabuleiro, Color.BLACK));
+		colocarNovaPeca('e', 1,new King(tabuleiro, Color.WHITE));
+		colocarNovaPeca('a', 1,new Rook(tabuleiro, Color.WHITE));
+		colocarNovaPeca('h', 1,new Rook(tabuleiro, Color.WHITE));
 	}
-
 }
