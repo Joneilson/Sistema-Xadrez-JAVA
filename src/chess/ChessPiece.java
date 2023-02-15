@@ -2,6 +2,7 @@ package chess;
 
 import boardgame.Board;
 import boardgame.Piece;
+import boardgame.Position;
 
 public abstract class ChessPiece extends Piece{
 	
@@ -14,6 +15,12 @@ public abstract class ChessPiece extends Piece{
 
 	public Color getCor() {
 		return cor;
+	}
+	
+	protected boolean existePecaInimiga(Position position) {
+		ChessPiece p = (ChessPiece) getBoard().peca(position);
+		return p != null && p.getCor() != cor;
+		
 	}
 	
 
