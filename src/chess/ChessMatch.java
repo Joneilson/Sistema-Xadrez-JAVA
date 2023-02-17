@@ -4,15 +4,29 @@ import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
 import chess.pieces.King;
+import chess.pieces.Queen;
 import chess.pieces.Rook;
 
 public class ChessMatch {
 	
+	private int turn;
+	private Color currentPlayer;
 	private Board tabuleiro;
 	
 	public ChessMatch() {
+		
 		tabuleiro = new Board(8, 8);
+		turn = 1;
+		currentPlayer = Color.WHITE;
 		comecoPartida();
+	}
+	
+	public int getTurn() {
+		return turn;
+	}
+	
+	public Color getCurrentPlayer() {
+		return currentPlayer;
 	}
 	
 	
@@ -39,6 +53,7 @@ public class ChessMatch {
 		Position target = targetPosition.toPosition();
 		validateSourcePosition(source);
 		validateTargetPosition(source, target);
+		nextTurn();
 		
 		Piece pecaCapturada = makeMove(source, target);
 		return (ChessPiece)pecaCapturada;
@@ -49,6 +64,10 @@ public class ChessMatch {
 		if(!tabuleiro.thereIsAPiece(position)) {
 			throw new ChessException("Não existe peça na posição de origem");
 		}
+		if(currentPlayer != ((ChessPiece)tabuleiro.peca(position)).getCor()) {
+			throw new ChessException("A peça escolhida não é sua");
+		}
+		
 		if(!tabuleiro.peca(position).existeMovimentoPossivel()) {
 			throw new ChessException("Não existem movimentos possiveis para a peça escolhida.");
 		}
@@ -68,6 +87,12 @@ public class ChessMatch {
 		return pecaCapturada;
 	}
 	
+	
+	private void nextTurn() {
+		turn++;
+		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
+	}
+	
 	private void colocarNovaPeca(char coluna, int linha, ChessPiece peca) {
 		tabuleiro.colocarPeca(peca, new ChessPosition(coluna, linha).toPosition());
 	}
@@ -82,5 +107,6 @@ public class ChessMatch {
 		colocarNovaPeca('e', 1,new King(tabuleiro, Color.WHITE));
 		colocarNovaPeca('a', 1,new Rook(tabuleiro, Color.WHITE));
 		colocarNovaPeca('h', 1,new Rook(tabuleiro, Color.WHITE));
+		colocarNovaPeca('d', 1,new Queen(tabuleiro, Color.WHITE));
 	}
 }
