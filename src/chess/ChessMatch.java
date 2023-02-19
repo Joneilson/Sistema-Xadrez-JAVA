@@ -1,8 +1,12 @@
 package chess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
+import chess.pieces.Bishop;
 import chess.pieces.King;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
@@ -12,6 +16,9 @@ public class ChessMatch {
 	private int turn;
 	private Color currentPlayer;
 	private Board tabuleiro;
+	
+	private List<Piece> pecasNoTabuleiro = new ArrayList<>();
+	private List<Piece> pecasCapturadas = new ArrayList<>();
 	
 	public ChessMatch() {
 		
@@ -84,6 +91,12 @@ public class ChessMatch {
 		Piece p = tabuleiro.removePeca(source);
 		Piece pecaCapturada = tabuleiro.removePeca(target);
 		tabuleiro.colocarPeca(p, target);
+		
+		if(pecaCapturada != null) {
+			pecasNoTabuleiro.remove(pecaCapturada);
+			pecasCapturadas.add(pecaCapturada);
+		}
+		
 		return pecaCapturada;
 	}
 	
@@ -95,6 +108,8 @@ public class ChessMatch {
 	
 	private void colocarNovaPeca(char coluna, int linha, ChessPiece peca) {
 		tabuleiro.colocarPeca(peca, new ChessPosition(coluna, linha).toPosition());
+		pecasNoTabuleiro.add(peca);
+		
 	}
 	
 	
@@ -103,10 +118,13 @@ public class ChessMatch {
 		colocarNovaPeca('a', 8,new Rook(tabuleiro, Color.BLACK));
 		colocarNovaPeca('h', 8,new Rook(tabuleiro, Color.BLACK));
 		colocarNovaPeca('e', 8,new King(tabuleiro, Color.BLACK));
+		colocarNovaPeca('d', 8,new Queen(tabuleiro, Color.BLACK));
+		colocarNovaPeca('c', 8, new Bishop(tabuleiro, Color.BLACK));
 		
 		colocarNovaPeca('e', 1,new King(tabuleiro, Color.WHITE));
 		colocarNovaPeca('a', 1,new Rook(tabuleiro, Color.WHITE));
 		colocarNovaPeca('h', 1,new Rook(tabuleiro, Color.WHITE));
 		colocarNovaPeca('d', 1,new Queen(tabuleiro, Color.WHITE));
+		colocarNovaPeca('c', 1, new Bishop(tabuleiro, Color.WHITE));
 	}
 }
