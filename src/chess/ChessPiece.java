@@ -16,10 +16,16 @@ public abstract class ChessPiece extends Piece{
 	public Color getCor() {
 		return cor;
 	}
+
+
+	public ChessPosition getChessPosition(){
+		return ChessPosition.fromPosition(position);
+	}
 	
 	protected boolean existePecaInimiga(Position position) {
 		ChessPiece p = (ChessPiece) getBoard().peca(position);
 		return p != null && p.getCor() != cor;
+		
 		
 	}
 	
