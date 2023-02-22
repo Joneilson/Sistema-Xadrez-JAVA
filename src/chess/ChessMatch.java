@@ -112,7 +112,8 @@ public class ChessMatch {
 	}
 	
 	private Piece makeMove(Position source, Position target) {
-		Piece p = tabuleiro.removePeca(source);
+		ChessPiece p = (ChessPiece)tabuleiro.removePeca(source);
+		p.incContMov();
 		Piece pecaCapturada = tabuleiro.removePeca(target);
 		tabuleiro.colocarPeca(p, target);
 		
@@ -126,7 +127,8 @@ public class ChessMatch {
 	
 
 	private void desfazerMovimento(Position source, Position target, Piece pecaCapturada){
-		Piece p = tabuleiro.removePeca(target);
+		ChessPiece p = (ChessPiece)tabuleiro.removePeca(target);
+		p.decContMov();
 		tabuleiro.colocarPeca(p, source);
 
 		if(pecaCapturada != null){
