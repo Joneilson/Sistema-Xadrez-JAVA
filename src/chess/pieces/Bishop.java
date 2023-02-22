@@ -27,7 +27,7 @@ public class Bishop extends ChessPiece{
 		p.setValues(position.getLinha() - 1, position.getColuna() - 1);
 		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
 			mat[p.getLinha()][p.getColuna()] = true;
-			p.setValues(p.getLinha() - 1, p.getColuna() - 1);;
+			p.setValues(p.getLinha() - 1, p.getColuna() - 1);
 		}
 		if(getBoard().positionExists(p) && existePecaInimiga(p)) {
 			mat[p.getLinha()][p.getColuna()] = true;
@@ -35,21 +35,10 @@ public class Bishop extends ChessPiece{
 		
 		// Movimento NE
 		
-		p.setValues(position.getLinha() + 1, position.getColuna() - 1);
+		p.setValues(position.getLinha() - 1, position.getColuna() + 1);
 		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
 			mat[p.getLinha()][p.getColuna()] = true;
-			p.setValues(p.getLinha() + 1, p.getColuna() - 1);;
-		}
-		if(getBoard().positionExists(p) && existePecaInimiga(p)) {
-			mat[p.getLinha()][p.getColuna()] = true;
-		}
-		
-		// Movimento SW
-		
-		p.setValues(position.getLinha() + 1, position.getColuna() + 1);
-		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
-			mat[p.getLinha()][p.getColuna()] = true;
-			p.setValues(p.getLinha() + 1, p.getColuna() + 1);;
+			p.setValues(p.getLinha() - 1, p.getColuna() + 1);
 		}
 		if(getBoard().positionExists(p) && existePecaInimiga(p)) {
 			mat[p.getLinha()][p.getColuna()] = true;
@@ -57,10 +46,21 @@ public class Bishop extends ChessPiece{
 		
 		// Movimento SE
 		
-		p.setValues(position.getLinha() - 1, position.getColuna() + 1);
+		p.setValues(position.getLinha() + 1, position.getColuna() + 1);
 		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
 			mat[p.getLinha()][p.getColuna()] = true;
-			p.setValues(p.getLinha() - 1, p.getColuna() + 1);;
+			p.setValues(p.getLinha() + 1, p.getColuna() + 1);
+		}
+		if(getBoard().positionExists(p) && existePecaInimiga(p)) {
+			mat[p.getLinha()][p.getColuna()] = true;
+		}
+		
+		// Movimento SW
+		
+		p.setValues(position.getLinha() + 1, position.getColuna() - 1);
+		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+			mat[p.getLinha()][p.getColuna()] = true;
+			p.setValues(p.getLinha() + 1, p.getColuna() - 1);
 		}
 		if(getBoard().positionExists(p) && existePecaInimiga(p)) {
 			mat[p.getLinha()][p.getColuna()] = true;

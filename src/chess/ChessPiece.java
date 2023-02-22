@@ -18,7 +18,7 @@ public abstract class ChessPiece extends Piece{
 		return cor;
 	}
 
-	public int contarMov(){
+	public int getContarMov(){
 		return contarMov;
 	}
 

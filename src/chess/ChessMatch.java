@@ -7,8 +7,12 @@ import java.util.stream.Collectors;
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
+import chess.pieces.Bishop;
 //import chess.pieces.Bishop;
 import chess.pieces.King;
+import chess.pieces.Knight;
+import chess.pieces.Pawn;
+import chess.pieces.Queen;
 //import chess.pieces.Queen;
 import chess.pieces.Rook;
 
@@ -209,14 +213,44 @@ public class ChessMatch {
 	
 	private void comecoPartida() {
 		
-		colocarNovaPeca('h', 7,new Rook(tabuleiro, Color.WHITE));
-		colocarNovaPeca('d', 1,new Rook(tabuleiro, Color.WHITE));
-		colocarNovaPeca('e', 1,new King(tabuleiro, Color.WHITE));
+		colocarNovaPeca('a', 1, new Rook(tabuleiro, Color.WHITE));
+		colocarNovaPeca('b', 1, new Knight(tabuleiro, Color.WHITE));
+		colocarNovaPeca('c', 1, new Bishop(tabuleiro, Color.WHITE));
+		colocarNovaPeca('d', 1, new Queen(tabuleiro, Color.WHITE));
+		colocarNovaPeca('e', 1, new King(tabuleiro, Color.WHITE));
+		colocarNovaPeca('f', 1, new Bishop(tabuleiro, Color.WHITE));
+		colocarNovaPeca('g', 1, new Knight(tabuleiro, Color.WHITE));
+		colocarNovaPeca('h', 1, new Rook(tabuleiro, Color.WHITE));
+		
+		colocarNovaPeca('a', 2, new Pawn(tabuleiro, Color.WHITE));
+		colocarNovaPeca('b', 2, new Pawn(tabuleiro, Color.WHITE));
+		colocarNovaPeca('c', 2, new Pawn(tabuleiro, Color.WHITE));
+		colocarNovaPeca('d', 2, new Pawn(tabuleiro, Color.WHITE));
+		colocarNovaPeca('e', 2, new Pawn(tabuleiro, Color.WHITE));
+		colocarNovaPeca('f', 2, new Pawn(tabuleiro, Color.WHITE));
+		colocarNovaPeca('g', 2, new Pawn(tabuleiro, Color.WHITE));
+		colocarNovaPeca('h', 2, new Pawn(tabuleiro, Color.WHITE));
+
 		
 		
+		colocarNovaPeca('a', 8, new Rook(tabuleiro, Color.BLACK));
+		colocarNovaPeca('b', 8, new Knight(tabuleiro, Color.BLACK));
+		colocarNovaPeca('d', 8, new Queen(tabuleiro, Color.BLACK));
+		colocarNovaPeca('c', 8, new Bishop(tabuleiro, Color.BLACK));
+		colocarNovaPeca('e', 8, new King(tabuleiro, Color.BLACK));
+		colocarNovaPeca('f', 8, new Bishop(tabuleiro, Color.BLACK));
+		colocarNovaPeca('g', 8, new Knight(tabuleiro, Color.BLACK));
+		colocarNovaPeca('h', 8, new Rook(tabuleiro, Color.BLACK));
 		
-		colocarNovaPeca('a', 8,new King(tabuleiro, Color.BLACK));
-		colocarNovaPeca('b', 8,new Rook(tabuleiro, Color.BLACK));
+		colocarNovaPeca('a', 7, new Pawn(tabuleiro, Color.BLACK));
+		colocarNovaPeca('b', 7, new Pawn(tabuleiro, Color.BLACK));
+		colocarNovaPeca('c', 7, new Pawn(tabuleiro, Color.BLACK));
+		colocarNovaPeca('d', 7, new Pawn(tabuleiro, Color.BLACK));
+		colocarNovaPeca('e', 7, new Pawn(tabuleiro, Color.BLACK));
+		colocarNovaPeca('f', 7, new Pawn(tabuleiro, Color.BLACK));
+		colocarNovaPeca('g', 7, new Pawn(tabuleiro, Color.BLACK));
+		colocarNovaPeca('h', 7, new Pawn(tabuleiro, Color.BLACK));
+		
 	
 	}
 }
