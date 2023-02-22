@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
-import chess.pieces.Bishop;
+//import chess.pieces.Bishop;
 import chess.pieces.King;
-import chess.pieces.Queen;
+//import chess.pieces.Queen;
 import chess.pieces.Rook;
 
 public class ChessMatch {
@@ -18,6 +18,7 @@ public class ChessMatch {
 	private Color currentPlayer;
 	private Board tabuleiro;
 	private boolean check;
+	private boolean checkMate;
 	
 	private List<Piece> pecasNoTabuleiro = new ArrayList<>();
 	private List<Piece> pecasCapturadas = new ArrayList<>();
@@ -40,6 +41,10 @@ public class ChessMatch {
 
 	public boolean getCheck(){
 		return check;
+	}
+
+	public boolean getCheckMate(){
+		return checkMate;
 	}
 	
 	
@@ -67,12 +72,21 @@ public class ChessMatch {
 		validateSourcePosition(source);
 		validateTargetPosition(source, target);
 		Piece pecaCapturada = makeMove(source, target);
+		
 		if(testeCheck(currentPlayer)){
 			desfazerMovimento(source, target, pecaCapturada);
 			throw new ChessException("Você não pode se colocar em check!");
 		}
+
 		check = (testeCheck(oponente(currentPlayer))) ? true : false;
-		nextTurn();		
+		
+		if(testeCheckMate(oponente(currentPlayer))){
+			checkMate = true;
+		}
+		else{
+			nextTurn();
+		}	
+
 		return (ChessPiece)pecaCapturada;
 		
 	}
@@ -133,8 +147,8 @@ public class ChessMatch {
 
 
 	private ChessPiece king(Color cor){
-		List<Piece> list = pecasNoTabuleiro.stream().filter(x -> ((ChessPiece)x).getCor() == cor).collect(Collectors.toList());
-		for (Piece p: list){
+		List<Piece> listPA = pecasNoTabuleiro.stream().filter(x -> ((ChessPiece)x).getCor() == cor).collect(Collectors.toList());
+		for (Piece p: listPA){
 			if(p instanceof King){
 				return (ChessPiece)p;
 			}
@@ -156,6 +170,33 @@ public class ChessMatch {
 		return false;
 	}
 
+
+	private boolean testeCheckMate(Color cor){
+
+		if(!testeCheck(cor)){
+			return false;
+		}
+		List<Piece> listCM = pecasNoTabuleiro.stream().filter(x -> ((ChessPiece)x).getCor() == cor).collect(Collectors.toList());
+		for(Piece p : listCM){
+			boolean [][] mat = p.movimentosPossiveis();
+			for (int i = 0; i < tabuleiro.getLinhas(); i++){
+				for(int j = 0; j < tabuleiro.getColunas(); j++){
+					if(mat[i][j]){
+						Position source = ((ChessPiece)p).getChessPosition().toPosition();
+						Position target = new Position(i, j);
+						Piece pecaCapturada = makeMove(source, target);
+						boolean testCheck = testeCheck(cor);
+						desfazerMovimento(source, target, pecaCapturada);
+						if(!testCheck){
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+
 	
 	private void colocarNovaPeca(char coluna, int linha, ChessPiece peca) {
 		tabuleiro.colocarPeca(peca, new ChessPosition(coluna, linha).toPosition());
@@ -166,16 +207,14 @@ public class ChessMatch {
 	
 	private void comecoPartida() {
 		
-		colocarNovaPeca('a', 8,new Rook(tabuleiro, Color.BLACK));
-		colocarNovaPeca('h', 8,new Rook(tabuleiro, Color.BLACK));
-		colocarNovaPeca('e', 8,new King(tabuleiro, Color.BLACK));
-		colocarNovaPeca('d', 8,new Queen(tabuleiro, Color.BLACK));
-		colocarNovaPeca('c', 8, new Bishop(tabuleiro, Color.BLACK));
-		
+		colocarNovaPeca('h', 7,new Rook(tabuleiro, Color.WHITE));
+		colocarNovaPeca('d', 1,new Rook(tabuleiro, Color.WHITE));
 		colocarNovaPeca('e', 1,new King(tabuleiro, Color.WHITE));
-		colocarNovaPeca('a', 1,new Rook(tabuleiro, Color.WHITE));
-		colocarNovaPeca('h', 1,new Rook(tabuleiro, Color.WHITE));
-		colocarNovaPeca('d', 1,new Queen(tabuleiro, Color.WHITE));
-		colocarNovaPeca('c', 1, new Bishop(tabuleiro, Color.WHITE));
+		
+		
+		
+		colocarNovaPeca('a', 8,new King(tabuleiro, Color.BLACK));
+		colocarNovaPeca('b', 8,new Rook(tabuleiro, Color.BLACK));
+	
 	}
 }

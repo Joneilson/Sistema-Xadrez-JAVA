@@ -64,7 +64,7 @@ public class Bishop extends ChessPiece{
 		}
 		if(getBoard().positionExists(p) && existePecaInimiga(p)) {
 			mat[p.getLinha()][p.getColuna()] = true;
-		}		
+		}			
 		return mat;
 	}
 
