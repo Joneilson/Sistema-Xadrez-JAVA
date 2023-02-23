@@ -23,6 +23,7 @@ public class ChessMatch {
 	private Board tabuleiro;
 	private boolean check;
 	private boolean checkMate;
+	private ChessPiece enPassantVulnerable;
 	
 	private List<Piece> pecasNoTabuleiro = new ArrayList<>();
 	private List<Piece> pecasCapturadas = new ArrayList<>();
@@ -49,6 +50,10 @@ public class ChessMatch {
 
 	public boolean getCheckMate(){
 		return checkMate;
+	}
+
+	public ChessPiece getEnPassantVulnerable(){
+		return enPassantVulnerable;
 	}
 	
 	
@@ -82,6 +87,8 @@ public class ChessMatch {
 			throw new ChessException("Você não pode se colocar em check!");
 		}
 
+		ChessPiece pecaMovida = (ChessPiece)tabuleiro.peca(target);
+
 		check = (testeCheck(oponente(currentPlayer))) ? true : false;
 		
 		if(testeCheckMate(oponente(currentPlayer))){
@@ -89,7 +96,16 @@ public class ChessMatch {
 		}
 		else{
 			nextTurn();
-		}	
+		}
+		
+		// Movimento enPassant
+
+		if(pecaMovida instanceof Pawn && (target.getLinha() == source.getLinha() - 2 || (target.getLinha() == source.getLinha() + 2 ))){
+			enPassantVulnerable = pecaMovida;
+		}
+		else{
+			enPassantVulnerable = null;
+		}
 
 		return (ChessPiece)pecaCapturada;
 		
@@ -143,6 +159,24 @@ public class ChessMatch {
 			tabuleiro.colocarPeca(rook, targetT);
 			rook.incContMov();
 		}
+
+		// EnPassant
+
+		if(p instanceof Pawn){
+			if(source.getColuna() != target.getColuna() && pecaCapturada == null){
+				Position pawnPosition;
+				if(p.getCor() == Color.WHITE){
+					pawnPosition = new Position(target.getLinha() + 1, target.getColuna());
+				}
+				else{
+					pawnPosition = new Position(target.getLinha() - 1, target.getColuna());
+				}
+				pecaCapturada = tabuleiro.removePeca(pawnPosition);
+				pecasCapturadas.add(pecaCapturada);
+				pecasNoTabuleiro.remove(pecaCapturada);
+
+			}
+		}
 		
 		return pecaCapturada;
 	}
@@ -176,6 +210,24 @@ public class ChessMatch {
 			tabuleiro.colocarPeca(rook, sourceT);
 			rook.decContMov();
 		}
+
+		// EnPassant
+
+		if(p instanceof Pawn){
+			if(source.getColuna() != target.getColuna() && pecaCapturada == enPassantVulnerable){
+				ChessPiece pawn = (ChessPiece)tabuleiro.removePeca(target);
+				Position pawnPosition;
+				if(p.getCor() == Color.WHITE){
+					pawnPosition = new Position(3, target.getColuna());
+				}
+				else{
+					pawnPosition = new Position(4, target.getColuna());
+				}
+
+				tabuleiro.colocarPeca(pawn, pawnPosition);
+			}
+		}
+
 	}
 	
 	private void nextTurn() {
@@ -258,14 +310,14 @@ public class ChessMatch {
 		colocarNovaPeca('g', 1, new Knight(tabuleiro, Color.WHITE));
 		colocarNovaPeca('h', 1, new Rook(tabuleiro, Color.WHITE));
 		
-		colocarNovaPeca('a', 2, new Pawn(tabuleiro, Color.WHITE));
-		colocarNovaPeca('b', 2, new Pawn(tabuleiro, Color.WHITE));
-		colocarNovaPeca('c', 2, new Pawn(tabuleiro, Color.WHITE));
-		colocarNovaPeca('d', 2, new Pawn(tabuleiro, Color.WHITE));
-		colocarNovaPeca('e', 2, new Pawn(tabuleiro, Color.WHITE));
-		colocarNovaPeca('f', 2, new Pawn(tabuleiro, Color.WHITE));
-		colocarNovaPeca('g', 2, new Pawn(tabuleiro, Color.WHITE));
-		colocarNovaPeca('h', 2, new Pawn(tabuleiro, Color.WHITE));
+		colocarNovaPeca('a', 2, new Pawn(tabuleiro, Color.WHITE, this));
+		colocarNovaPeca('b', 2, new Pawn(tabuleiro, Color.WHITE, this));
+		colocarNovaPeca('c', 2, new Pawn(tabuleiro, Color.WHITE, this));
+		colocarNovaPeca('d', 2, new Pawn(tabuleiro, Color.WHITE, this));
+		colocarNovaPeca('e', 2, new Pawn(tabuleiro, Color.WHITE, this));
+		colocarNovaPeca('f', 2, new Pawn(tabuleiro, Color.WHITE, this));
+		colocarNovaPeca('g', 2, new Pawn(tabuleiro, Color.WHITE, this));
+		colocarNovaPeca('h', 2, new Pawn(tabuleiro, Color.WHITE, this));
 
 		
 		
@@ -278,14 +330,14 @@ public class ChessMatch {
 		colocarNovaPeca('g', 8, new Knight(tabuleiro, Color.BLACK));
 		colocarNovaPeca('h', 8, new Rook(tabuleiro, Color.BLACK));
 		
-		colocarNovaPeca('a', 7, new Pawn(tabuleiro, Color.BLACK));
-		colocarNovaPeca('b', 7, new Pawn(tabuleiro, Color.BLACK));
-		colocarNovaPeca('c', 7, new Pawn(tabuleiro, Color.BLACK));
-		colocarNovaPeca('d', 7, new Pawn(tabuleiro, Color.BLACK));
-		colocarNovaPeca('e', 7, new Pawn(tabuleiro, Color.BLACK));
-		colocarNovaPeca('f', 7, new Pawn(tabuleiro, Color.BLACK));
-		colocarNovaPeca('g', 7, new Pawn(tabuleiro, Color.BLACK));
-		colocarNovaPeca('h', 7, new Pawn(tabuleiro, Color.BLACK));
+		colocarNovaPeca('a', 7, new Pawn(tabuleiro, Color.BLACK, this));
+		colocarNovaPeca('b', 7, new Pawn(tabuleiro, Color.BLACK, this));
+		colocarNovaPeca('c', 7, new Pawn(tabuleiro, Color.BLACK, this));
+		colocarNovaPeca('d', 7, new Pawn(tabuleiro, Color.BLACK, this));
+		colocarNovaPeca('e', 7, new Pawn(tabuleiro, Color.BLACK, this));
+		colocarNovaPeca('f', 7, new Pawn(tabuleiro, Color.BLACK, this));
+		colocarNovaPeca('g', 7, new Pawn(tabuleiro, Color.BLACK, this));
+		colocarNovaPeca('h', 7, new Pawn(tabuleiro, Color.BLACK, this));
 		
 	
 	}
