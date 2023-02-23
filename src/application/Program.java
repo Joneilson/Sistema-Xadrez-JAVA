@@ -47,7 +47,12 @@ public class Program {
 
 				if(chessMatch.getPromocao() != null){
 					System.out.print("Digite a peça para promoção (B/C/T/Q): ");
-					String type = sc.nextLine();
+					String type = sc.nextLine().toUpperCase();
+					while(!type.equals("B") && !type.equals("C") && !type.equals("T") && !type.equals("Q")){
+						System.out.print("Invalido! Digite a peça para promoção (B/C/T/Q): ");
+						type = sc.nextLine().toUpperCase();
+					}
+
 					chessMatch.subsPecaPromovida(type);
 				}
 			
