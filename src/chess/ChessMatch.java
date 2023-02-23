@@ -1,5 +1,6 @@
 package chess;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class ChessMatch {
 	private boolean check;
 	private boolean checkMate;
 	private ChessPiece enPassantVulnerable;
+	private ChessPiece promocao;
 	
 	private List<Piece> pecasNoTabuleiro = new ArrayList<>();
 	private List<Piece> pecasCapturadas = new ArrayList<>();
@@ -54,6 +56,10 @@ public class ChessMatch {
 
 	public ChessPiece getEnPassantVulnerable(){
 		return enPassantVulnerable;
+	}
+
+	public ChessPiece getPromocao(){
+		return promocao;
 	}
 	
 	
@@ -88,6 +94,16 @@ public class ChessMatch {
 		}
 
 		ChessPiece pecaMovida = (ChessPiece)tabuleiro.peca(target);
+
+		// Movimento Promoção
+		promocao = null;
+		if(pecaMovida instanceof Pawn){
+			if(pecaMovida.getCor() == Color.WHITE && target.getLinha() == 0 || pecaMovida.getCor() == Color.BLACK && target.getLinha() == 7 ){
+				promocao = (ChessPiece)tabuleiro.peca(target);
+				promocao = subsPecaPromovida("Q");
+			}
+		}
+
 
 		check = (testeCheck(oponente(currentPlayer))) ? true : false;
 		
@@ -130,7 +146,32 @@ public class ChessMatch {
 			throw new ChessException("A peça escolhida não pode se mover para a casa de destino");
 		}
 	}
-	
+
+	public ChessPiece subsPecaPromovida(String type){
+		if(promocao == null){
+			throw new IllegalStateException("Não existe peça para ser promovida!");
+		}
+		if(!type.equals("B") && !type.equals("C") && !type.equals("T") && !type.equals("Q")){
+			throw new InvalidParameterException("Tipo invalido para promoção!");
+		}
+
+		Position pos = promocao.getChessPosition().toPosition();
+		Piece p = tabuleiro.removePeca(pos);
+		pecasNoTabuleiro.remove(p);
+
+		ChessPiece novaPeca = novaPeca(type, promocao.getCor());
+		tabuleiro.colocarPeca(novaPeca, pos);
+		pecasNoTabuleiro.add(novaPeca);
+
+		return novaPeca;
+	}
+
+	private ChessPiece novaPeca(String type, Color cor){
+		if(type.equals("B")) return new Bishop(tabuleiro, cor);
+		if(type.equals("C")) return new Knight(tabuleiro, cor);
+		if(type.equals("Q")) return new Queen(tabuleiro, cor);
+		return new Rook(tabuleiro, cor);
+	}	
 	private Piece makeMove(Position source, Position target) {
 		ChessPiece p = (ChessPiece)tabuleiro.removePeca(source);
 		p.incContMov();

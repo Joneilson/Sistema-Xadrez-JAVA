@@ -44,6 +44,12 @@ public class Program {
 					capturadas.add(pecaCapturada);
 				}
 				
+
+				if(chessMatch.getPromocao() != null){
+					System.out.print("Digite a peça para promoção (B/C/T/Q): ");
+					String type = sc.nextLine();
+					chessMatch.subsPecaPromovida(type);
+				}
 			
 			}
 			
